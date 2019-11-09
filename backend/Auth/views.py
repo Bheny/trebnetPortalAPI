@@ -6,9 +6,9 @@ from django.contrib.auth.models import User, auth
 from.serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
 
-	
-#@api_view(['POST'])
-@csrf_exempt
+
+#@csrf_exempt	
+@api_view(['POST'])
 def register(request):
 	'''
 		Creating the user accounts
@@ -32,7 +32,8 @@ def register(request):
 		return JsonResponse({'message':'Form reset'}, safe=False)
 
 
-@csrf_exempt
+#@csrf_exempt
+@api_view(['POST'])
 def login(request):
 	'''
 		The Login route only takes post data using Form Data.
