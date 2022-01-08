@@ -33,6 +33,7 @@ def save_user_profile(sender, instance, **kwargs):
 class Project(models.Model):
 	title = models.CharField(max_length=255, blank=False)
 	image = models.ImageField(default='default.png', upload_to="projects", blank=True)
+	timeline = models.DateTimeField(auto_now=True)
 	author = models.ForeignKey(Profile, related_name="author", on_delete=models.CASCADE)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)	

@@ -7,6 +7,7 @@ from api.views import *
 
 router = routers.DefaultRouter()
 router.register('projects', ProjectView, 'project')
+router.register('profiles', ProfileView, 'profile')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
