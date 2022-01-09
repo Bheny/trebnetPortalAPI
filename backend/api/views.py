@@ -7,6 +7,7 @@ class UserView(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
 	queryset = User.objects.all()
 
+
 class ProjectView(viewsets.ModelViewSet):
 	serializer_class = ProjectSerializer
 	queryset = Project.objects.all() 
