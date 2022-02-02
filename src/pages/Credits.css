@@ -1,0 +1,110 @@
+.credits-page {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.credit-bar,
+.transaction-bar {
+  width: 100%;
+  padding: 10px 20px;
+  height: 40px;
+  background: var(--primary__blue);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.credit-bar-title,
+.transaction-bar-title {
+  flex: 50%;
+  color: var(--primary__white);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.send-credit {
+  flex: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.send-creditBtn {
+  border: none;
+  outline: none;
+  padding: 10px 5px;
+  background: var(--primary__white);
+  color: var(--primary__blue);
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.send-creditBtn:hover {
+  background: var(--primary__blue);
+  color: var(--primary__white);
+  border: 2px var(--primary__white) solid;
+}
+
+.total-credits {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background: var(--primary__blue);
+  color: var(--primary__white);
+  width: fit-content;
+  border-radius: 5px;
+}
+
+.amount {
+  font-size: 50px;
+  font-weight: bolder;
+  padding: 25px 0px;
+}
+
+.coins {
+  font-size: 16px;
+}
+
+.transaction-history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.transaction-table-div {
+  width: 100%;
+  height: 200px;
+  /* background: var(--primary__blue); */
+  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  border-bottom: 1px solid var(--primary__blue);
+}
+
+.transaction-table {
+  width: 100vw;
+  text-align: center;
+  border-collapse: collapse;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+.transaction-table th {
+  border-bottom: 2px var(--primary__blue) solid;
+}
+
+.transaction-table td {
+  padding: 10px;
+}

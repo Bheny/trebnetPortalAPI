@@ -1,0 +1,55 @@
+.index-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: var(--primary__white);
+}
+
+.welcome {
+  height: fit-content;
+  width: fit-content;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.438);
+  padding: 15px 20px;
+  gap: 20px;
+  background: white;
+}
+
+.welcome-title {
+  text-align: center;
+}
+
+img.welcome-img {
+  width: 600px;
+  height: 400px;
+  display: grid;
+  place-items: center;
+}
+
+.btn-action {
+  width: 80%;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  text-decoration: none;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.438);
+  display: grid;
+  place-content: center;
+  padding: 10px 15px;
+}
+.btn-register {
+  background: var(--primary__blue);
+  color: var(--primary__white);
+}
+
+.btn-login {
+  background: var(--primary__white);
+  color: var(--primary__blue);
+}

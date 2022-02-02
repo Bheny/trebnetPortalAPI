@@ -1,0 +1,96 @@
+.login {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-box {
+  max-width: 400px;
+  height: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.377);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+.form-control {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-control > label {
+  font-size: 18px;
+  color: var(--primary__blue);
+  display: none;
+}
+
+.form-control input {
+  width: 350px;
+  height: 40px;
+  font-size: 16px;
+  padding: 5px 15px;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.377);
+}
+
+.form-btn-link {
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.form-btn-link button {
+  flex: 55%;
+  border: none;
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  background: var(--primary__blue);
+  color: var(--primary__white);
+  font-size: 25px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.form-btn-link .links {
+  flex: 45%;
+  width: 100%;
+
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
+
+body > div.ReactModalPortal > div > div {
+  padding: 0px !important;
+  margin: 0px !important;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+  background: var(--primary__white) !important;
+}
+
+small.message-small {
+  color: var(--primary__decline);
+}

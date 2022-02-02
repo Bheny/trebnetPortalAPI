@@ -1,0 +1,74 @@
+.question-box {
+  width: 100%;
+  height: 600px;
+  /* background: blue; */
+}
+
+.question-box-header {
+  width: 100%;
+  height: 40px;
+  background: var(--primary__blue);
+  color: var(--primary__white);
+  padding: 20px 0px;
+  border-radius: 45x;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+}
+
+.question-box-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  gap: 20px;
+}
+
+.question-box-body .question > h2 {
+  font-size: 40px;
+  text-align: center;
+  /* text-shadow: 1px 2px 8px #0000006b; */
+}
+
+.question-box-body input.question-answer {
+  margin-top: 10px;
+  width: 98%;
+  height: 60px;
+  font-size: 25px;
+  text-align: left;
+  padding-left: 10px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  box-shadow: 0px 1px 02px 1px rgba(0, 0, 0, 0.425);
+}
+
+.question-box-body button.question-answer-submit {
+  margin-top: 15px;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  background: var(--primary__accept);
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0px 1px 02px 1px rgba(0, 0, 0, 0.425);
+}
+.question-box-body small {
+  color: var(--primary__link);
+}
+
+.question-box-body small.message-small {
+  color: var(--primary__decline);
+}
+
+body > div.ReactModalPortal > div > div > button.modal-close {
+}

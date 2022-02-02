@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.all-form-control {
+  @apply grid sm:grid-cols-3 sm:justify-start sm:content-center;
+}
+
+.input-base {
+  @apply border-b border-gray-300  p-2 focus:border-b-blue-600 focus:outline-none;
+}
+
+.label-base {
+  @apply md:col-span-1 grid content-end text-gray-700;
+}
+
+.btn {
+  @apply rounded-full py-2 px-3 uppercase font-bold cursor-pointer tracking-wider shadow transition ease-in duration-500;
+}
+
+.custom-img {
+  background-image: url(./Assets/loginPicture.jpg);
+}
+
+.error {
+  @apply text-rose-600 text-sm text-left mt-2;
+}
+
+.polygon {
+  clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+}
+
+.widget {
+  @apply grid text-center border-0 rounded-lg shadow-2xl place-content-center px-10 py-9 gap-6 w-full h-full;
+}
+
+.spread {
+  @apply flex flex-row gap-5 flex-wrap;
+}
+
+.spread-list {
+  @apply p-2 text-white cursor-pointer rounded-full w-fit text-center px-4 shadow;
+}
+
+.profile-input {
+  @apply border-none bg-white pl-3 py-2 w-full shadow disabled:bg-gray-300 rounded-sm;
+}
