@@ -4,7 +4,6 @@ from django.urls import path,include
 from rest_framework import routers  
 from api.views import *
 
-
 router = routers.DefaultRouter()
 router.register('projects', ProjectView, 'project')
 router.register('profiles', ProfileView, 'profile')
@@ -20,7 +19,10 @@ router.register('announcement', AnnouncementView, 'announcement')
 
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('auth/', include('Auth.urls')),
+    path('send_credits/', send_credits)
 ]
