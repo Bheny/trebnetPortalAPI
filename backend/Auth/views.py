@@ -5,9 +5,13 @@ from .forms import UserRegisterForm
 from django.contrib.auth.models import User, auth
 from.serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
+from django.middleware import csrf
 
+@api_view(['GET'])
+def getCSRFToken(request):
+	csrftoken = csrf.get_token(request)
+	return JsonResponse({'csrfToken':csrftoken})
 
-#@csrf_exempt	
 @api_view(['POST'])
 def register(request):
 	'''

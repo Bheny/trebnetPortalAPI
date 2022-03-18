@@ -6,6 +6,7 @@ app_name = 'auth'
 
 urlpatterns = [
 	path('register/', csrf_exempt(register), name="register"),
+	path('getCSRFToken/', getCSRFToken),
 	#path('register/', register, name="register"),
 	path('login/', login, name="login"),
 	path('logout/', logout, name="logout"),
