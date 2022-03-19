@@ -6,9 +6,15 @@ def send_credits(Amount=None, From=None, To=None):
 		reciever = Profile.objects.get(id=To)
 
 		if sender.is_cleared():
-			reciever.balance += int(Amount)
-			reciever.save()
-			return "Successful"
+			#check if senders balane is sufficient
+			if Amount <= sender.balance: 
+				reciever.balance += int(Amount)
+				sender.balance -= int(Amount)
+				sender.save()
+				reciever.save()
+				return "Successful"
+			else:
+				return "balance insufficient"
 		else:
 			return "Sender Not Authorized"
 
