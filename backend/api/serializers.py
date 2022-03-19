@@ -38,7 +38,7 @@ class TransactionSerializer(ModelSerializer):
 	class Meta:
 		model = Transaction
 		fields = '__all__'
-		depth = 2
+		#depth = 2
 
 
 class EventSerializer(ModelSerializer):

@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path,include 
 from rest_framework import routers  
 from api.views import *
+#from rest_framework.generics import ListCreateAPIView
 
 router = routers.DefaultRouter()
 router.register('projects', ProjectView, 'project')
@@ -23,6 +24,7 @@ router.register('announcement', AnnouncementView, 'announcement')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    #path('transactions/', ListCreateAPIView.as_view(), name='Transactions'),
     path('auth/', include('Auth.urls')),
     path('send_credits/', send_credits)
 ]
