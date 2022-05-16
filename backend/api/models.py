@@ -4,10 +4,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 RANKS = (
-		('4','Class D'),
-		('3','Class C'),
-		('2','Class B'),
-		('1','Class A'),
+		('8','Cadet - Level 1'),
+		('7','Cadet - Level 2'),
+		('6','Cadet - Level 3'),
+		('5','Cadet - Level 4'),
+		('4','Lieutenant'),
+		('3','Captain'),
+		('2','Major'),
+		('1','General'),
 		('0','Class S'),
 
 		)
@@ -17,8 +21,12 @@ class Profile(models.Model):
 	image = models.ImageField(default='default.png', upload_to='profile_pics')
 	location = models.CharField(max_length=200, blank=True, null=True)
 	balance = models.DecimalField(max_digits=999,decimal_places=2,default=0)
-	rank = models.CharField(choices=RANKS, max_length=255, default="4")
+	rank = models.CharField(choices=RANKS, max_length=255, default="1")
 
+	def is_cleared(self):
+		if int(self.rank) < 4:
+			return True
+		return False
 
 	def __str__(self):
 		return f'{self.user.username} Profile'  
