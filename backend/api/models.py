@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 RANKS = (
 		('8','Cadet - Level 1'),
 		('7','Cadet - Level 2'),
@@ -13,15 +14,39 @@ RANKS = (
 		('2','Major'),
 		('1','General'),
 		('0','Class S'),
+)
 
-		)
+
+class Rank(models.Model):
+	title = models.CharField(max_length=100)
+	description = models.TextField(blank=True)
+	active = models.BooleanField(default=False)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return self.title
+
+# Create your models here.
+class Project(models.Model):
+	title = models.CharField(max_length=255, blank=False)
+	image = models.ImageField(default='default.png', upload_to="projects", blank=True)
+	timeline = models.DateTimeField(auto_now=True)
+	author = models.ForeignKey(User, related_name="author", on_delete=models.CASCADE)
+	rank = models.ForeignKey(Rank, related_name="project_rank", on_delete=models.DO_NOTHING)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)	
+
+	def __str__(self):
+		return self.title
 # Create your models here.
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	image = models.ImageField(default='default.png', upload_to='profile_pics')
 	location = models.CharField(max_length=200, blank=True, null=True)
 	balance = models.DecimalField(max_digits=999,decimal_places=2,default=0)
-	rank = models.CharField(choices=RANKS, max_length=255, default="1")
+	rank = models.ForeignKey(Rank, related_name="profileranks", default='1', on_delete=models.DO_NOTHING)
+	projects = models.ManyToManyField(Project, related_name="members", blank=True)
 
 	def is_cleared(self):
 		if int(self.rank) < 4:
@@ -45,18 +70,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-# Create your models here.
-class Project(models.Model):
-	title = models.CharField(max_length=255, blank=False)
-	image = models.ImageField(default='default.png', upload_to="projects", blank=True)
-	timeline = models.DateTimeField(auto_now=True)
-	author = models.ForeignKey(Profile, related_name="author", on_delete=models.CASCADE)
-	rank = models.CharField(choices=RANKS, max_length=255, default="4")
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)	
 
-	def __str__(self):
-		return self.title
 
 
 class Team(models.Model):
@@ -65,7 +79,7 @@ class Team(models.Model):
 	members = models.ManyToManyField(Profile, related_name="team_members", blank="True")
 	description = models.TextField(blank=True)
 	projects = models.ManyToManyField(Project, related_name="team_projects", blank=True)
-	rank = models.CharField(choices=RANKS, max_length=255, default="4")
+	rank = models.ForeignKey(Rank, related_name="team_rank", on_delete=models.DO_NOTHING)
 	created = models.DateTimeField(auto_now=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
@@ -79,7 +93,7 @@ class Job(models.Model):
 	title = models.CharField(max_length=255)
 	max_personel = models.PositiveIntegerField(default=0)
 	min_personel = models.PositiveIntegerField(default=0)
-	rank = models.CharField(choices=RANKS, max_length=255, default="4")
+	rank = models.ForeignKey(Rank, related_name="job_rank",on_delete=models.DO_NOTHING)
 
 	def __str__(self):
 		return '{} request for {}'.format(self.rank,self.title)
@@ -110,7 +124,7 @@ class Event(models.Model):
 
 
 class Question(models.Model):
-	image = models.ImageField(default="default.png",upload_to="events",blank=True)
+	image = models.ImageField(default="default.png", upload_to="events",blank=True)
 	subject = models.CharField(max_length=255)
 	answer = models.TextField()
 	answered_by = models.ForeignKey(User, related_name="answered_by", on_delete=models.DO_NOTHING)

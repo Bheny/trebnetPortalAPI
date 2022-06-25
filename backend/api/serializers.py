@@ -17,7 +17,19 @@ class ProfileSerializer(ModelSerializer):
 		model = Profile  
 		fields = '__all__'
 
+class ProfileDetailSerializer(ModelSerializer):
+	class Meta:
+		model = Profile 
+		fields = '__all__'
+		depth = 1 
+
 class ProjectSerializer(ModelSerializer):
+	class Meta:
+		model = Project 
+		fields = ('title','timeline','image','author','created')
+		depth = 2
+
+class MyProjectsSerializer(ModelSerializer):
 	class Meta:
 		model = Project 
 		fields = ('title','timeline','image','author','created')
