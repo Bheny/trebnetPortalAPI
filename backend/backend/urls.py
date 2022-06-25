@@ -3,11 +3,15 @@ from django.contrib import admin
 from django.urls import path,include 
 from rest_framework import routers  
 from api.views import *
+from django.conf.urls import url 
+from django.views.static import serve
+from django.conf import settings
 #from rest_framework.generics import ListCreateAPIView
 
 router = routers.DefaultRouter()
 router.register('projects', ProjectView, 'project')
 router.register('profiles', ProfileView, 'profile')
+router.register('profile/detail', ProfileDetailView, 'profile')
 router.register('users', UserView, 'user')
 router.register('transaction', TransactionView, 'transaction')
 router.register('event', EventView, 'event')
@@ -26,5 +30,7 @@ urlpatterns = [
     path('', include(router.urls)),
     #path('transactions/', ListCreateAPIView.as_view(), name='Transactions'),
     path('auth/', include('Auth.urls')),
-    path('send_credits/', send_credits)
+    path('send_credits/', send_credits),
+    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]

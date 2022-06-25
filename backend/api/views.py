@@ -26,6 +26,20 @@ class ProfileView(viewsets.ModelViewSet):
 	serializer_class = ProfileSerializer  
 	queryset = Profile.objects.all()
 
+
+class ProfileDetailView(viewsets.ModelViewSet):
+	"""
+
+
+		Pass the profile ID to this URL ...
+		/profile/detail/{profile_id}
+
+		
+	"""
+	serializer_class = ProfileDetailSerializer  
+	queryset = Profile.objects.all()
+
+
 class TeamView(viewsets.ModelViewSet):
 	serializer_class = TeamSerializer  
 	queryset = Team.objects.all()
