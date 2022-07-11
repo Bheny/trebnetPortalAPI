@@ -127,7 +127,7 @@ class Question(models.Model):
 	image = models.ImageField(default="default.png", upload_to="events",blank=True)
 	subject = models.CharField(max_length=255)
 	answer = models.TextField()
-	answered_by = models.ForeignKey(User, related_name="answered_by", on_delete=models.DO_NOTHING)
+	#answered_by = models.ForeignKey(User, related_name="answered_by", on_delete=models.DO_NOTHING)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 

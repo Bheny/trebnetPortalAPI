@@ -10,7 +10,8 @@ from django.conf import settings
 
 router = routers.DefaultRouter()
 router.register('projects', ProjectView, 'project')
-router.register('profiles', ProfileView, 'profiles')
+router.register('
+profiles', ProfileView, 'profiles')
 router.register('profile/detail', ProfileDetailView, 'profile_detail')
 router.register('users', UserView, 'user')
 router.register('transaction', TransactionView, 'transaction')
