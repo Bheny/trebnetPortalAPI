@@ -58,6 +58,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://192.168.1.117:3000',
+    'https://rebel-portal.vercel.app'
 
 ]
 
