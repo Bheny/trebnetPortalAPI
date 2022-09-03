@@ -5,9 +5,9 @@ def send_credits(Amount=None, From=None, To=None):
 		sender = Profile.objects.get(id=From)
 		reciever = Profile.objects.get(id=To)
 
-		if sender.is_cleared():
+		if sender.user.is_authenticated and sender.is_cleared():
 			#check if senders balane is sufficient
-			if Amount <= sender.balance: 
+			if Amount <= sender.balance:
 				reciever.balance += int(Amount)
 				sender.balance -= int(Amount)
 				sender.save()

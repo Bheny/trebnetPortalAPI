@@ -5,13 +5,13 @@ from rest_framework import generics
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import *
-from .serializers import * 
+from .serializers import *
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .services import send_credits
 
- 
+
 class UserView(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
 	queryset = User.objects.all()
@@ -19,11 +19,11 @@ class UserView(viewsets.ModelViewSet):
 
 class ProjectView(viewsets.ModelViewSet):
 	serializer_class = ProjectSerializer
-	queryset = Project.objects.all() 
+	queryset = Project.objects.all()
 
 
 class ProfileView(viewsets.ModelViewSet):
-	serializer_class = ProfileSerializer  
+	serializer_class = ProfileSerializer
 	queryset = Profile.objects.all()
 
 
@@ -34,18 +34,18 @@ class ProfileDetailView(viewsets.ModelViewSet):
 		Pass the profile ID to this URL ...
 		/profile/detail/{profile_id}
 
-		
+
 	"""
-	serializer_class = ProfileDetailSerializer  
+	serializer_class = ProfileDetailSerializer
 	queryset = Profile.objects.all()
 
 
 class TeamView(viewsets.ModelViewSet):
-	serializer_class = TeamSerializer  
+	serializer_class = TeamSerializer
 	queryset = Team.objects.all()
 
 class JobView(viewsets.ModelViewSet):
-	serializer_class = JobSerializer  
+	serializer_class = JobSerializer
 	queryset = Job.objects.all()
 
 # This view needs to check if the sender of the credits has the right priviledges to do so
@@ -63,27 +63,27 @@ class TransactionView(viewsets.ModelViewSet):
 			/transaction/13/
 
 		To Update
-			\t\tsend a formdata to using axios to the url 
+			\t\tsend a formdata to using axios to the url
 			/transaction/<id>/
 	"""
 
-	serializer_class = TransactionSerializer  
+	serializer_class = TransactionSerializer
 	queryset = Transaction.objects.all()
 
 	def create(self, request):
 		serializer = TransactionSerializer(data=request.data)
-		
+
 		if serializer.is_valid():
 			message = send_credits(int(request.data['amount']),request.data['sender'],request.data['reciever'])
-			if message == "Successful":	
+			if message == "Successful":
 				serializer.save()
 				return Response(serializer.data)
 			else:
 				return Response({'message':message})
 
-		return Response(serializer.erros)
-			
-			
+		return Response(serializer.errors)
+
+
 
 
 
@@ -99,21 +99,21 @@ class TransactionList(generics.ListCreateAPIView):
 
 
 class EventView(viewsets.ModelViewSet):
-	serializer_class = EventSerializer  
+	serializer_class = EventSerializer
 	queryset = Event.objects.all()
 
 class QuestionView(viewsets.ModelViewSet):
-	serializer_class = QuestionSerializer  
+	serializer_class = QuestionSerializer
 	queryset = Question.objects.all()
 
 class IdeaView(viewsets.ModelViewSet):
-	serializer_class = IdeaSerializer  
+	serializer_class = IdeaSerializer
 	queryset = Idea.objects.all()
 
 class NewsView(viewsets.ModelViewSet):
-	serializer_class = NewsSerializer  
+	serializer_class = NewsSerializer
 	queryset = News.objects.all()
 
 class AnnouncementView(viewsets.ModelViewSet):
-	serializer_class = AnnouncementSerializer  
+	serializer_class = AnnouncementSerializer
 	queryset = Announcement.objects.all()

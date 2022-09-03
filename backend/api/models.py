@@ -21,6 +21,7 @@ class Rank(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.TextField(blank=True)
 	active = models.BooleanField(default=False)
+	score = models.PositiveIntegerField(default=0)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
@@ -35,7 +36,7 @@ class Project(models.Model):
 	author = models.ForeignKey(User, related_name="author", on_delete=models.CASCADE)
 	rank = models.ForeignKey(Rank, related_name="project_rank", on_delete=models.DO_NOTHING)
 	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)	
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.title
@@ -49,12 +50,12 @@ class Profile(models.Model):
 	projects = models.ManyToManyField(Project, related_name="members", blank=True)
 
 	def is_cleared(self):
-		if int(self.rank) < 4:
+		if int(self.rank.score) < 4 and self.user.is_active:
 			return True
 		return False
 
 	def __str__(self):
-		return f'{self.user.username} Profile'  
+		return f'{self.user.username} Profile'
 
 
 	def get_alphabet(self):
@@ -88,7 +89,7 @@ class Team(models.Model):
 
 
 class Job(models.Model):
-	
+
 	image = models.ImageField(default="default.png",upload_to="jobs", blank=True)
 	title = models.CharField(max_length=255)
 	max_personel = models.PositiveIntegerField(default=0)
@@ -100,7 +101,7 @@ class Job(models.Model):
 
 
 class Transaction(models.Model):
-	transaction_id = models.CharField(max_length=20)
+	transaction_id = models.CharField(max_length=20,blank=True)
 	sender = models.ForeignKey(Profile, related_name="sender", on_delete=models.DO_NOTHING, null=False)
 	reciever = models.ForeignKey(Profile, related_name="reciever", on_delete=models.DO_NOTHING, null=False)
 	amount = models.PositiveIntegerField(default=0)
