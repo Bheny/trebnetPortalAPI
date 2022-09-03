@@ -1,67 +1,41 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework import generics, permissions, serializers
 from django.http import JsonResponse
 from .forms import UserRegisterForm
 from django.contrib.auth.models import User, auth
 from.serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware import csrf
+from knox.models import AuthToken 
+from rest_framework.response import Response 
+from .serializers import UserSerializer, RegisterSerializer , LoginSerializer 
 
-@api_view(['GET'])
-def getCSRFToken(request):
-	csrftoken = csrf.get_token(request)
-	return JsonResponse({'csrfToken':csrftoken})
+class SignUpAPI(generics.GenericAPIView):
+	serializer_class = RegisterSerializer 
 
-@api_view(['POST'])
-def register(request):
-	'''
-		Creating the user accounts
-		Required data include 
-
-		username, email, password1, password2
-
-	'''
-	form = UserRegisterForm()
-	try:
-		if request.method == 'POST':
-			form = UserRegisterForm(request.POST)
-			if form.is_valid():
-				username = form.cleaned_data['username']
-				form.save()
-				return JsonResponse({ 'success':'Username created for {}'.format(username)}, safe=False)
-			else:
-				return JsonResponse({'errors':form.errors }, safe=False)	
-	except Exception as e:
-		print(e)
-		return JsonResponse({'message':'Form reset'}, safe=False)
+	def post(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		user = serializer.save() 
+		token = AuthToken.objects.create(user)
+		return Response({
+			"users": UserSerializer(user, context=self.get_serializer_context()).data,
+			"token": token[1]
+		})
 
 
-#@csrf_exempt
-@api_view(['POST'])
-def login(request):
-	'''
-		The Login route only takes post data using Form Data.
+class SignInAPI(generics.GenericAPIView):
+	serializer_class = LoginSerializer 
 
-		It uses the fields:
-		     Username or email 
-		     password 
-
-		returns user data in json form when validated 
-		else returns a response with key 'message'.
-	'''
-	if request.method == "POST":
-		username = request.POST.get('username') 
-		password = request.POST.get('password')
-		print(username, password)
-		new_user = auth.authenticate(username=username, password=password)
-		print(new_user)
-		if new_user is not None:
-			auth.login(request, new_user)
-			user = new_user
-			serializer = UserSerializer(new_user)
-			return JsonResponse({'user':serializer.data}, safe=False)
-		return JsonResponse({'message':"user does not exist"}, safe=False)
-
+	def post(self, request):
+		serializer = self.get_serializer(data=request.data)
+		print(serializer)
+		serializer.is_valid(raise_exception=True)
+		user = serializer.validated_data
+		return Response({
+			"user": UserSerializer(user, context=self.get_serializer_context()).data,
+			"token": AuthToken.objects.create(user)[1]
+		})
 
 def logout(request):
 	user = request.user

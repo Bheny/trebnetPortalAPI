@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Auth',
     'rest_framework',
     'corsheaders',
+    'knox',
 
 ]
 
