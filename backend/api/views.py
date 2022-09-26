@@ -40,6 +40,7 @@ class ProfileDetailView(viewsets.ModelViewSet):
 	queryset = Profile.objects.all()
 
 
+
 class TeamView(viewsets.ModelViewSet):
 	serializer_class = TeamSerializer
 	queryset = Team.objects.all()
@@ -117,3 +118,42 @@ class NewsView(viewsets.ModelViewSet):
 class AnnouncementView(viewsets.ModelViewSet):
 	serializer_class = AnnouncementSerializer
 	queryset = Announcement.objects.all()
+
+class RankView(viewsets.ModelViewSet):
+    serializer_class = RankSerializer
+    queryset = Rank.objects.all()
+
+class ClientView(viewsets.ModelViewSet):
+    serializer_class = ClientSerializer
+    queryset = Client.objects.all()
+
+class ServiceView(viewsets.ModelViewSet):
+    serializer_class = ServiceSerializer
+    queryset = Service.objects.all()
+
+class ServiceRequestDetailView(viewsets.ModelViewSet):
+
+    """
+
+
+		Pass the profile ID to this URL ...
+		/profile/detail/{profile_id}
+
+
+	"""
+    serializer_class = ServiceRequestDetailSerializer
+    queryset = ServiceRequest.objects.all()
+
+class NoteView(viewsets.ModelViewSet):
+    serializer_class =  NoteSerializer
+    queryset =  Note.objects.all()
+
+class ServiceRequestView(viewsets.ModelViewSet):
+    serializer_class =  ServiceRequestSerializer
+    queryset =  ServiceRequest.objects.all()
+
+class JobRequestView(viewsets.ModelViewSet):
+    serializer_class = JobRequestSerializer
+    queryset = JobRequest.objects.all()
+
+

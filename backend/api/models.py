@@ -5,28 +5,23 @@ from django.dispatch import receiver
 
 
 RANKS = (
-		('8','Cadet - Level 1'),
-		('7','Cadet - Level 2'),
-		('6','Cadet - Level 3'),
-		('5','Cadet - Level 4'),
-		('4','Lieutenant'),
-		('3','Captain'),
-		('2','Major'),
-		('1','General'),
-		('0','Class S'),
+		('Job','Job'),
+		('Membership','Membership'),
+
 )
 
 
 class Rank(models.Model):
-	title = models.CharField(max_length=100)
-	description = models.TextField(blank=True)
-	active = models.BooleanField(default=False)
-	score = models.PositiveIntegerField(default=0)
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
+    rank_type = models.CharField(max_length=100, choices=RANKS, default="N/A")
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    active = models.BooleanField(default=False)
+    score = models.PositiveIntegerField(default=0)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
-	def __str__(self):
-		return self.title
+    def __str__(self):
+        return self.title
 
 # Create your models here.
 class Project(models.Model):
@@ -40,13 +35,14 @@ class Project(models.Model):
 
 	def __str__(self):
 		return self.title
+
 # Create your models here.
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	image = models.ImageField(default='default.png', upload_to='profile_pics')
 	location = models.CharField(max_length=200, blank=True, null=True)
 	balance = models.DecimalField(max_digits=999,decimal_places=2,default=0)
-	rank = models.ForeignKey(Rank, related_name="profileranks", default='1', on_delete=models.DO_NOTHING)
+	rank = models.ForeignKey(Rank, related_name="profileranks", on_delete=models.DO_NOTHING) # Rememeber to revert this to 1 before final production
 	projects = models.ManyToManyField(Project, related_name="members", blank=True)
 
 	def is_cleared(self):
@@ -69,6 +65,13 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    temp = Rank.objects.get_or_create(title="D",description="lowest ranking Rank", score="100")
+    if not instance.profile.rank.id:
+        instance.profile.rank = temp
+    else:
+        temp = instance.profile.rank
+
+    instance.profile.balance = temp.score
     instance.profile.save()
 
 
@@ -169,3 +172,90 @@ class Announcement(models.Model):
 
 	def __str__(self):
 		return self.title
+
+
+class Client(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    contact = models.CharField(max_length=20)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '{} {}'.format(self.first_name,self.last_name)
+
+class Service(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ServiceRequest(models.Model):
+    STATUSES = (
+        ('Pending','Pending'),
+        ('Assigned','Assigned'),
+        ('Done','Done'),
+        )
+    image = models.ImageField(upload_to="serviceRequests", default="default.png", blank=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    serviceType = models.ForeignKey(Service, related_name="service_request", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    client = models.ForeignKey(Client, related_name="Clients", on_delete=models.CASCADE)
+    status = models.CharField(max_length=255, choices=STATUSES, default="Pending")
+    active = models.BooleanField(default=True)
+    rank = models.ForeignKey(Rank, related_name="servicerRanks", on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+class Note(models.Model):
+    service = models.ForeignKey(Service, related_name="Service_notes", on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    author = models.ForeignKey(Profile, related_name="notes", on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+	    return self.title
+
+class JobRequest(models.Model):
+    STATUSES = (
+        ('Pending','Pending'),
+        ('Assigned','Assigned'),
+        ('Done','Done'),
+        )
+    user = models.ForeignKey(Profile, related_name="jobrequests", on_delete=models.CASCADE)
+    service = models.ForeignKey(ServiceRequest, related_name="service_request_job", on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
+    status = models.CharField(max_length=255, choices=STATUSES, default="Pending")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '{} requested for {}'.format(self.user.user.first_name, self.service)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

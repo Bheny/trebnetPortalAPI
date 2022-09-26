@@ -1,37 +1,41 @@
 from rest_framework.serializers import ModelSerializer
 
-from django.contrib.auth.models import User  
-
-from .models import * 
+from django.contrib.auth.models import User
+from rest_framework import serializers
+from .models import *
 
 class UserSerializer(ModelSerializer):
 	'''
-		
+
 	'''
 	class Meta:
-		model = User 
+		model = User
 		fields = ('id','password','username','first_name','last_name','email')
 
 class ProfileSerializer(ModelSerializer):
 	class Meta:
-		model = Profile  
+		model = Profile
 		fields = '__all__'
 
 class ProfileDetailSerializer(ModelSerializer):
-	class Meta:
-		model = Profile 
-		fields = '__all__'
-		depth = 1 
+
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        depth = 1
+
+
+
 
 class ProjectSerializer(ModelSerializer):
 	class Meta:
-		model = Project 
+		model = Project
 		fields = ('title','timeline','image','author','created')
 		depth = 2
 
 class MyProjectsSerializer(ModelSerializer):
 	class Meta:
-		model = Project 
+		model = Project
 		fields = ('title','timeline','image','author','created')
 		depth = 2
 
@@ -66,17 +70,57 @@ class QuestionSerializer(ModelSerializer):
 
 class IdeaSerializer(ModelSerializer):
 	class Meta:
-		model = Idea 
+		model = Idea
 		fields = '__all__'
 
 class NewsSerializer(ModelSerializer):
 	class Meta:
-		model = News 
+		model = News
 		fields = '__all__'
 
 class AnnouncementSerializer(ModelSerializer):
 	class Meta:
-		model = Announcement 
+		model = Announcement
 		fields = '__all__'
 
-		
+
+class RankSerializer(ModelSerializer):
+    class Meta:
+        model = Rank
+        fields = '__all__'
+
+
+class ClientSerializer(ModelSerializer):
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
+class ServiceSerializer(ModelSerializer):
+    class Meta:
+        model = Service
+        fields = '__all__'
+
+### Service Request serializers
+class ServiceRequestSerializer(ModelSerializer):
+    class Meta:
+        model = ServiceRequest
+        fields = '__all__'
+
+class ServiceRequestDetailSerializer(ModelSerializer):
+    class Meta:
+        model = ServiceRequest
+        fields = '__all__'
+        depth = 1
+
+### Ends all affairs with service requests
+
+class JobRequestSerializer(ModelSerializer):
+    class Meta:
+        model = JobRequest
+        fields = '__all__'
+
+class NoteSerializer(ModelSerializer):
+    class Meta:
+        model = Note
+        fields = '__all__'

@@ -1,9 +1,9 @@
 
 from django.contrib import admin
-from django.urls import path,include 
-from rest_framework import routers  
+from django.urls import path,include
+from rest_framework import routers
 from api.views import *
-from django.conf.urls import url 
+from django.conf.urls import url
 from django.views.static import serve
 from django.conf import settings
 #from rest_framework.generics import ListCreateAPIView
@@ -21,6 +21,14 @@ router.register('questions', QuestionView, 'question')
 router.register('idea', IdeaView, 'idea')
 router.register('news', NewsView, 'news')
 router.register('announcement', AnnouncementView, 'announcement')
+router.register('rank', RankView, 'rank')
+router.register('client', ClientView, 'client')
+router.register('service', ServiceView, 'service')
+router.register('serviceRequests', ServiceRequestView, 'serviceRequest')
+router.register('serviceRequest/detail', ServiceRequestDetailView, 'service_request_detail')
+router.register('JobRequest', JobRequestView, 'JobRequest')
+router.register('Notes', NoteView, 'Notes')
+
 
 
 
