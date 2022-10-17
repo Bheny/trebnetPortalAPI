@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework import routers
 from api.views import *
-from django.conf.urls import url
+# from django.conf.urls import url
 from django.views.static import serve
 from django.conf import settings
 #from rest_framework.generics import ListCreateAPIView
@@ -39,6 +39,6 @@ urlpatterns = [
     #path('transactions/', ListCreateAPIView.as_view(), name='Transactions'),
     path('auth/', include('Auth.urls')),
     path('send_credits/', send_credits),
-    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    path('media/', serve,{'document_root': settings.MEDIA_ROOT}),
+    path('static/', serve,{'document_root': settings.STATIC_ROOT}),
 ]

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'api',
     'Auth',
     'rest_framework',
-    'rest_framework_swagger',
+    #'rest_framework_swagger',
     'corsheaders',
     'knox',
 
@@ -48,6 +48,8 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
 
 }
 MIDDLEWARE = [
