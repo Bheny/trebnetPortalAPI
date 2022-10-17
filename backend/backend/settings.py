@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'api',
     'Auth',
     'rest_framework',
+    'rest_framework_swagger',
     'corsheaders',
     'knox',
 

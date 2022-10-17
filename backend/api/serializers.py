@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import *
 
+
 class UserSerializer(ModelSerializer):
 	'''
 
@@ -12,10 +13,11 @@ class UserSerializer(ModelSerializer):
 		model = User
 		fields = ('id','password','username','first_name','last_name','email')
 
-class ProfileSerializer(ModelSerializer):
-	class Meta:
-		model = Profile
-		fields = '__all__'
+class SimpleUserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields =('username',)
+
 
 class ProfileDetailSerializer(ModelSerializer):
 
@@ -88,6 +90,13 @@ class RankSerializer(ModelSerializer):
     class Meta:
         model = Rank
         fields = '__all__'
+
+class ProfileSerializer(ModelSerializer):
+    user = SimpleUserSerializer()
+    rank = RankSerializer()
+    class Meta:
+        model = Profile
+        fields = ('id','image','location','balance','user','rank')
 
 
 class ClientSerializer(ModelSerializer):

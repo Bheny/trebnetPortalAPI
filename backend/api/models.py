@@ -61,18 +61,24 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        rank = Rank.objects.get(title="D")
+        if rank:
+            Profile.objects.create(user=instance,rank=rank)
+        else:
+            rank = Rank.objects.create(title="D",description="Lowest ranking member",score=100)
+            Profile.objects.create(user=instance,rank=rank)
+
+
+
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    temp = Rank.objects.get_or_create(title="D",description="lowest ranking Rank", score="100")
-    if not instance.profile.rank.id:
-        instance.profile.rank = temp
-    else:
-        temp = instance.profile.rank
-
-    instance.profile.balance = temp.score
+    instance.profile.balance = instance.profile.rank.score
     instance.profile.save()
+
+
+
+
 
 
 
