@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Profiles',
     'Ranks',
     'Class',
+    'Missions',
     'rest_framework',
     #'rest_framework_swagger',
     'corsheaders',
