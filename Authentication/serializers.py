@@ -2,23 +2,24 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import PhoneBook
+from .models import PhoneBook, EmailVerificationToken
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User 
-        fields = ('id','username','email','first_name','last_name','password') 
+        fields = ('id','username','email','first_name','last_name','password','is_active') 
         
 class RegisterSerializer(serializers.ModelSerializer):
     class_title = serializers.CharField()
     class Meta:
         model = User 
-        fields = ('id', 'username', 'email','first_name','last_name','password','class_title')
+        fields = ('id', 'username', 'email','first_name','last_name','password','class_title','is_active')
         extra_kwargs = {
                        'password': {'write_only':True},
                        'first_name':{'required':True},
                        'last_name':{'required':True},
-                       'Class':{'required':True}
+                       'Class':{'required':True},
+                       'is_active':{'read_only':True}
                        
                        }
 
@@ -28,7 +29,8 @@ class RegisterSerializer(serializers.ModelSerializer):
                                             first_name=validated_data['first_name'],
                                             last_name=validated_data['last_name'],
                                             email=validated_data['email'],
-                                            password=validated_data['password'])
+                                            password=validated_data['password'],
+                                            is_active=False)
             return user
         except KeyError as e:
             return e
@@ -57,3 +59,8 @@ class PhoneBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneBook 
         fields = ['phone','otp']
+
+class EmailVerificationTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailVerificationToken
+        fields = ['user','token']

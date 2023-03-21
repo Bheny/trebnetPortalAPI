@@ -4,6 +4,23 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver 
 from django.db import  IntegrityError
 from .services import unique_otp_generator
+from django.utils.crypto import get_random_string
+
+class EmailVerificationToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=64, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # Generate a unique verification token before saving
+        if not self.token:
+            self.token = get_random_string(length=64)
+            while EmailVerificationToken.objects.filter(token=self.token).exists():
+                self.token = get_random_string(length=64)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'token generated for {self.user}'
 
 class PhoneBook(models.Model):
     phone = models.CharField(max_length=20, unique=True)

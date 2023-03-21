@@ -87,7 +87,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,3 +159,14 @@ else:
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'trebnet.online@gmail.com' # Replace with your email address
+EMAIL_HOST_PASSWORD = 'sydryuiemzxnaxgx' # Replace with your email password
+DEFAULT_FROM_EMAIL = 'trebnet.online@gmail.com' # Replace with your email address
+
+BASE_URL = 'http://localhost:8000/' # Replace with your website's URL
