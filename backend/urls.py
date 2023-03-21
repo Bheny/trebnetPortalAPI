@@ -52,6 +52,9 @@ urlpatterns = [
     path('rank/', include('Ranks.urls')),
     path('class/', include('Class.urls')),
     path('mission/', include('Missions.urls')),
+    path('notifications/', include('Notifications.urls')),
+    path('events/', include('Events.urls')),
+    path('transactions/', include('Transactions.urls')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

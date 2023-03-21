@@ -8,7 +8,9 @@ from .serializers import *
 from Profiles.models import Profile
 from .services import send_sms
 from Profiles.serializers import ProfileSerializer, ProfileDetailSerializer	
-# Create your views here.
+from Notifications.services import send_notification
+from Class.models import Class
+from Ranks.models import Rank
 
 class SignUpAPI(generics.GenericAPIView):
 	serializer_class = RegisterSerializer 
@@ -17,9 +19,19 @@ class SignUpAPI(generics.GenericAPIView):
 		serializer = self.get_serializer(data=request.data)
 		print("serializer is valid: ",serializer.is_valid())
 		# serializer.is_valid(raise_exception=True)
-		
+		rank, created = Rank.objects.get_or_create(title="Associate", active=True)
+
 		if serializer.is_valid():
 			user = serializer.save() 
+			class_data = serializer.validated_data['class_title']
+			print(dir(Class))
+			c = Class.objects.get(title=class_data)
+			print("value",c)
+			profile = Profile.objects.create(user=user, rank=rank, Class=c)
+
+			
+			message = "Profile Created, You are now an Associate of the Rebel Ranks"
+			send_notification(message, profile)
 			token = AuthToken.objects.create(user)
 			return Response({
 				"users": UserSerializer(user, context=self.get_serializer_context()).data,
@@ -36,7 +48,7 @@ class SignInAPI(generics.GenericAPIView):
 
 	def post(self, request):
 		serializer = self.get_serializer(data=request.data)
-		print(serializer)
+		print("this:", serializer)
 		serializer.is_valid(raise_exception=True)
 		data = serializer.validated_data
 		token = AuthToken.objects.create(data)[1]
@@ -46,7 +58,8 @@ class SignInAPI(generics.GenericAPIView):
 			'username':user['username'],
 			'email':user['email'],
 		}
-		profile = Profile.objects.get(user=user['id'])
+		print(request.data)
+		profile = Profile.objects.get(user=user['id']).filter(Class='Noob')
 		return Response({
 			"user": user ,
 			"profile": ProfileDetailSerializer(profile).data,

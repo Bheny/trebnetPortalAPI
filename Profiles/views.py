@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Profile
-from .serializers import ProfileSerializer #, ProfileDetailSerializer, UpdateProfileDetailSerializer
+from .serializers import ProfileSerializer, ProfileDetailSerializer #UpdateProfileDetailSerializer
 from rest_framework import viewsets, generics, permissions, serializers, filters
 
 class ProfileList(generics.GenericAPIView):
@@ -14,7 +14,7 @@ class ProfileList(generics.GenericAPIView):
     def get(self, request):
         # get the user profile for the authenticated user
         Profiles = Profile.objects.all()
-        serializer = ProfileSerializer(Profiles, many=True)
+        serializer = ProfileDetailSerializer(Profiles, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -66,6 +66,11 @@ class ProfileDetail(generics.GenericAPIView):
             return Profile.objects.get(pk=pk)
         except Profile.DoesNotExist:
             raise Http404
+
+    def get(self, request, pk):
+        Profile = self.get_object(pk)
+        serializer = ProfileSerializer(Profile)
+        return Response(serializer.data)
 
     def get_queryset(self, request, pk):
         Profile = self.get_object(pk)

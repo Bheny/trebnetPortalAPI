@@ -1,3 +1,6 @@
 from django.contrib import admin
+from Profiles.models import ClassApplication
+from .models import Class 
 
-# Register your models here.
+admin.site.register(ClassApplication)
+admin.site.register(Class)

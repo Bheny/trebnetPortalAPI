@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Class(models.Model):
     image = models.ImageField(upload_to="class/", blank=True)
     title= models.CharField(max_length=100)
@@ -8,4 +9,5 @@ class Class(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.Title
+        return self.title
+

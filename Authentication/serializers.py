@@ -10,13 +10,15 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id','username','email','first_name','last_name','password') 
         
 class RegisterSerializer(serializers.ModelSerializer):
+    class_title = serializers.CharField()
     class Meta:
         model = User 
-        fields = ('id', 'username', 'email','first_name','last_name','password')
+        fields = ('id', 'username', 'email','first_name','last_name','password','class_title')
         extra_kwargs = {
                        'password': {'write_only':True},
                        'first_name':{'required':True},
                        'last_name':{'required':True},
+                       'Class':{'required':True}
                        
                        }
 
@@ -34,7 +36,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField() 
     password = serializers.CharField()
-
+    class_title = serializers.CharField()
     def validate(self, data):
         user = authenticate(**data)
         if user and user.is_active:

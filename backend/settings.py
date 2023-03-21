@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     'Ranks',
     'Class',
     'Missions',
+    'Notifications',
+    'Events',
+    'Transactions',
     'rest_framework',
+    'django_filters',
     #'rest_framework_swagger',
     'corsheaders',
     'knox',
@@ -51,11 +55,14 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 
 }
+
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
