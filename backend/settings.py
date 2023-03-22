@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'Notifications',
     'Events',
     'Transactions',
+    'Chat',
+    'channels',
     'rest_framework',
     'django_filters',
     #'rest_framework_swagger',
@@ -62,6 +64,14 @@ REST_FRAMEWORK = {
 
 }
 
+#Channel Configuration 
+ASGI_APPLICATION = "Chat.routing.application" #routing.py will be created later
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
