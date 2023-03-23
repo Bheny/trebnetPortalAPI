@@ -96,26 +96,34 @@ class SignInAPI(generics.GenericAPIView):
 		print("this:", serializer)
 		serializer.is_valid(raise_exception=True)
 		data = serializer.validated_data
-		token = AuthToken.objects.create(data)[1]
-		user = UserSerializer(data, context=self.get_serializer_context()).data
-		user = {
+		#Before you log them in check if the re quested class exists.
+		class_name = request.data['class_title']
+		try:
+			class_data = Class.objects.get(title=class_name)
+			profile = Profile.objects.filter(user=user['id']).filter(Class__title=class_name)[0]
+			token = AuthToken.objects.create(data)[1]
+			user = UserSerializer(data, context=self.get_serializer_context()).data
+			user = {
 			'id':user['id'],
 			'username':user['username'],
 			'email':user['email'],
-		}
-		class_name = request.data['class_title']
-
-		print(data)
-		profile = Profile.objects.filter(user=user['id']).filter(Class__title=class_name)[0]
-		
-		
-		
-		return Response({
+			}
+			
+			return Response({
 			"user": user ,
 			"profile": ProfileDetailSerializer(profile).data,
 			"token": token
-		})
+			})
 
+		except Class.DoesNotExist:
+			return Response({'data':'User account with this Profile does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+		
+		
+
+		
+		
+		
+		
 class sendOtpViewSet(generics.GenericAPIView):
 	"""
 		This endpoints takes in the phone number , generates an otp and sends it to the number

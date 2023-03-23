@@ -5,14 +5,14 @@ from Profiles.serializers import ProfileSerializer
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ('id', 'name', 'users')
+        fields = '__all__'
 
 class MessageSerializer(serializers.ModelSerializer):
     user = ProfileSerializer()
 
     class Meta:
         model = Message
-        fields = ('id', 'room', 'user', 'content', 'timestamp')
+        fields = '__all__'
 
 class ForumSerializer(serializers.ModelSerializer):
     class Meta:

@@ -65,11 +65,14 @@ REST_FRAMEWORK = {
 }
 
 #Channel Configuration 
-ASGI_APPLICATION = "Chat.routing.application" #routing.py will be created later
+ASGI_APPLICATION = "config.asgi.application" #routing.py will be created later
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        'BACKEND': "channels_redis.core.RedisChannelLayer",
+        'CONFIG': {
+            "hosts": [('redis',6379)]
+        }
         }
     }
 
