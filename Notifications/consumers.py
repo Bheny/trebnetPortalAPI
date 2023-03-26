@@ -1,48 +1,37 @@
-import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from djangochannelsrestframework.decorators import action
+from djangochannelsrestframework.mixins import (
+    ListModelMixin,
+    CreateModelMixin,
+    UpdateModelMixin,
+    DeleteModelMixin
+)
+from djangochannelsrestframework.observer import model_observer
+
 from .models import Notification
-
-class NotificationConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.group_name = "notifications"
-
-        #join to group 
-        await self.channel_layer.group_add(self.group_name, self.channel_name)
-        await self.accept()
+from .serializers import NotificationSerializer
 
 
+class NotificationConsumer(
+    AsyncWebsocketConsumer,
+    ListModelMixin,
+    CreateModelMixin,
+    UpdateModelMixin,
+    DeleteModelMixin
+):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
 
-        # await self.accept()
-        # self.id = self.scope["path"] #["kwargs"]["id"]
-        # print(str(self.scope))
-        # # Subscribe the user to their notifications 
-        # await self.channel_layer.group_add(
-        #     self.id,
-        #     self.channel_name
-        # )
-    
-    async def disconnect(self):
-        # Unsubscribe the from their notifications
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
+    # async def connect(self):
+    #     await self.accept()
 
-    async def recieve(self, texxt_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+    # async def disconnect(self, close_code):
+    #     pass
 
-        event =  {
-            'type':'send_message',
-            'message':message
-        }
+    @action()
+    def subscribe(self, pk):
+        model_observer(self, Notification.objects.get(pk=pk))
 
-        await self.channel_layer.group_send(self.group_name, event)
-    
-    async def send_message(self, event):
-        notification = event['message']
-
-        #Send the notification to the client
-        await self.send(text_data=json.dumps({
-            'message':message
-        }))
+    @action()
+    def unsubscribe(self, pk):
+        model_observer(self, Notification.objects.get(pk=pk), remove=True)

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ws://localhost:8000;">
+  <title>Generic Api Consumer</title>
+</head>
+<body>
+
+<button id="list">List</button>
+<button id="retrieve">Retrieve</button>
+<button id="create">Create</button>
+<button id="patch">Patch</button>
+<button id="update">Update</button>
+<button id="delete">Delete</button>
+
+<pre id="response"></pre>
+
+</body>
+
+<script>
+
+  const ws = new WebSocket('ws://localhost:8000/ws/notifications/');
+  
+  ws.addEventListener('open', function(event) {
+    console.log('WebSocket connection established');
+  });
+  
+  ws.addEventListener('message', function(event) {
+    const message = JSON.parse(event.data).message;
+    console.log('Received notification: ' + message);
+  });
+  
+  // // Example usage to send a notification message
+  // const notification = {
+  //   message: 'New message received'
+  // };
+  
+  // const xhr = new XMLHttpRequest();
+  // xhr.open('POST', 'notifications/');
+  // xhr.setRequestHeader('Content-Type', 'application/json');
+  // xhr.setRequestHeader('Authorization', 'Bearer <your JWT token>');
+  // xhr.onload = function() {
+  //   if (xhr.status === 200) {
+  //     console.log(xhr.responseText);
+  //   } else {
+  //     console.error(xhr.statusText);
+  //   }
+  // };
+  // xhr.onerror = function() {
+  //   console.error('Error sending notification:', xhr.statusText);
+  // };
+  // xhr.send(JSON.stringify(notification));
+  
+  
+  </script>
+</html>

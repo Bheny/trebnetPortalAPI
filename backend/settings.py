@@ -25,12 +25,13 @@ SECRET_KEY = '8p0oq)dv#=ty^x(6$^zxt6rfz$qn%i$_q5#-isgcm)e)22-q(r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rebelsportal.pythonanywhere.com','192.168.1.166','localhost']
+ALLOWED_HOSTS = ['rebelsportal.pythonanywhere.com','192.168.177.87','localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'Chat',
     'channels',
     'rest_framework',
+    'djangochannelsrestframework',
     'django_filters',
     #'rest_framework_swagger',
     'corsheaders',
@@ -64,14 +66,20 @@ REST_FRAMEWORK = {
 
 }
 
-#Channel Configuration 
-ASGI_APPLICATION = "config.asgi.application" #routing.py will be created later
+ #"config.asgi.application" #routing.py will be created later
+
+
+DJANGO_SETTINGS_MODULE = "backend.settings"
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': "channels_redis.core.RedisChannelLayer",
-        'CONFIG': {
-            "hosts": [('redis',6379)]
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+       
+        },
+        'redis':{
+            'BACKEND': "channels_redis.core.RedisChannelLayer",
+            'CONFIG': {
+                'hosts': [('redis',6379)]
         }
         }
     }
@@ -87,7 +95,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "ws://localhost:8000",
+   
+    # Add other origins as needed
+]
 CORS_ORIGIN_WHITELIST = [
+    'http://192.168.177.87:8000',
     'http://localhost:3000',
     'http://192.168.1.117:3000',
     'https://rebel-portal.vercel.app'
@@ -113,6 +130,8 @@ TEMPLATES = [
     },
 ]
 
+#Channel Configuration 
+ASGI_APPLICATION = 'backend.asgi.application'
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -182,4 +201,4 @@ EMAIL_HOST_USER = 'trebnet.online@gmail.com' # Replace with your email address
 EMAIL_HOST_PASSWORD = 'sydryuiemzxnaxgx' # Replace with your email password
 DEFAULT_FROM_EMAIL = 'trebnet.online@gmail.com' # Replace with your email address
 
-BASE_URL = 'http://localhost:8000/' # Replace with your website's URL
+BASE_URL = 'http://localhost:8000' # Replace with your website's URL
