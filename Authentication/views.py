@@ -99,18 +99,21 @@ class SignInAPI(generics.GenericAPIView):
 		#Before you log them in check if the re quested class exists.
 		class_name = request.data['class_title']
 		try:
-			class_data = Class.objects.get(title=class_name)
-			profile = Profile.objects.filter(user=user['id']).filter(Class__title=class_name)[0]
+			
 			token = AuthToken.objects.create(data)[1]
 			user = UserSerializer(data, context=self.get_serializer_context()).data
-			user = {
+
+			
+			user_data = {
 			'id':user['id'],
 			'username':user['username'],
 			'email':user['email'],
 			}
-			
+			# print("Activated User:",user['is_active'])
+			class_data = Class.objects.get(title=class_name)
+			profile = Profile.objects.filter(user=user_data['id']).filter(Class__title=class_name)[0]
 			return Response({
-			"user": user ,
+			"user": user_data ,
 			"profile": ProfileDetailSerializer(profile).data,
 			"token": token
 			})
@@ -236,7 +239,7 @@ class verify_email(generics.GenericAPIView):
 			token_obj = EmailVerificationToken.objects.get(token=token)
 		except EmailVerificationToken.DoesNotExist:
 			# Return an error response if the token is invalid or expired
-			return 'Invalid or expired token'
+			return Response({'message':'Invalid or expired token'}, status=status.HTTP_400_BAD_REQUEST)
 
 		# Verify the user's email address
 		user = token_obj.user

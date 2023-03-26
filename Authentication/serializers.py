@@ -40,10 +40,19 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
     class_title = serializers.CharField()
     def validate(self, data):
-        user = authenticate(**data)
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError('Incorect credentials Passed')
+        
+        try:
+            user = User.objects.get(username=data['username'])
+            if user:
+                if user.is_active:
+                    user = authenticate(**data)
+                    return user
+                raise serializers.ValidationError('Your Account is not Active ... check your email or contact Admin')
+            raise serializers.ValidationError('Incorect credentials Passed')
+        except User.DoesNotExist:
+            raise serializers.ValidationError('User Account Does not Exist')
+        
+        
 
 
 
