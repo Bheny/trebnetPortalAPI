@@ -72,10 +72,13 @@ class ProfileDetail(generics.GenericAPIView):
         serializer = ProfileSerializer(Profile)
         return Response(serializer.data)
 
-    def get_queryset(self, request, pk):
-        Profile = self.get_object(pk)
-        serializer = ProfileSerializer(Profile)
-        return Response(serializer.data)
+    def queryset(self, request,):
+        pass 
+
+    # def get_queryset(self, request, pk):
+    #     Profile = self.get_object(pk)
+    #     serializer = ProfileSerializer(Profile)
+    #     return Response(serializer.data)
 
     def put(self, request, pk):
         Profile = self.get_object(pk)

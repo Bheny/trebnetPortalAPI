@@ -61,6 +61,9 @@ class MissionDetail(generics.GenericAPIView):
         serializer = MissionListSerializer(Mission)
         return Response(serializer.data)
 
+    def queryset(self, request,):
+        pass 
+    
     def put(self, request, pk):
         Mission = self.get_object(pk)
         serializer = MissionSerializer(Mission, data=request.data)
@@ -134,7 +137,10 @@ class MissionApplicationDetail(generics.GenericAPIView):
         serializer = MissionApplicationListSerializer(MissionApplication)
         return Response(serializer.data)
 
-    def get_queryset(self, request, pk):
+    def queryset(self, request,):
+        pass 
+
+    def get(self, request, pk):
         MissionApplication = self.get_object(pk)
         serializer = MissionApplicationListSerializer(MissionApplication)
         return Response(serializer.data)

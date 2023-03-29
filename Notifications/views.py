@@ -3,10 +3,47 @@ from rest_framework.response import Response
 from .models import Notification 
 from .serializers import *
 from django.shortcuts import render, reverse
-
+from rest_framework.decorators import action
+from rest_framework import viewsets
+from channels.layers import get_channel_layer
+from djangochannelsrestframework.decorators import action as ws_action
 
 def index(request):
     return render(request, 'index2.html')
+
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    serializer_class = NotificationSerializer
+    queryset = Notification.objects.all()
+
+    def perform_create(self, serializer):
+        notification = serializer.save() 
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "notifications", {"type": "notification.created", "notification": notification}
+        )
+    @action(detail=True, methods=['post'])
+    def subscribe(self, request, pk=None):
+        user = request.user
+        # notification = self.get_object()
+        # notification.users.add(user)
+        # notification.save()
+        return Response({'status': user})
+
+    @action(detail=True, methods=['post'])
+    def unsubscribe(self, request, pk=None):
+        user = request.user
+        notification = self.get_object()
+        notification.users.remove(user)
+        notification.save()
+        return Response({'status': 'unsubscribed'})
+
+    @ws_action(detail=True)
+    async def send_notification(self, request, pk=None):
+        notification = self.get_object()
+        notification.send()
+        return Response({'status': 'sent'})
 
 
 class NotificationList(generics.GenericAPIView):
@@ -47,6 +84,9 @@ class NotificationDetail(generics.GenericAPIView):
         except Notification.DoesNotExist:
             raise Http404
 
+    def queryset(self, request,):
+        pass 
+    
     def get(self, request, pk):
         Notification = self.get_object(pk)
         serializer = NotificationListSerializer(Notification)

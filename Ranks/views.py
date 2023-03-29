@@ -27,16 +27,18 @@ class RankDetail(generics.GenericAPIView):
         except Rank.DoesNotExist:
             raise Http404
 
-    def get_queryset(self, request, pk):
-        Rank = self.get_object(pk)
-        serializer = RankSerializer(Rank)
-        return Response(serializer.data)
+    # def get_queryset(self, request, pk):
+    #     Rank = self.get_object(pk)
+    #     serializer = RankSerializer(Rank)
+    #     return Response(serializer.data)
 
     def get(self, request, pk):
         Rank = self.get_object(pk)
         serializer = RankSerializer(Rank)
         return Response(serializer.data)
 
+    def queryset(self, request,):
+        pass 
     # def put(self, request, pk):
     #     Rank = self.get_object(pk)
     #     serializer = RankSerializer(Rank, data=request.data)

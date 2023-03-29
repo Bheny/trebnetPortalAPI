@@ -56,6 +56,9 @@ class EventDetail(generics.GenericAPIView):
         except Event.DoesNotExist:
             raise Http404
 
+    def queryset(self, request,):
+        pass 
+    
     def get(self, request, pk):
         Event = self.get_object(pk)
         serializer = EventListSerializer(Event)

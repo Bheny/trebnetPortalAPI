@@ -20,17 +20,56 @@
 </body>
 
 <script>
+// Create a new WebSocket object
+const ws = new WebSocket('ws://localhost:8000/ws/notifications/');
+  
 
-  const ws = new WebSocket('ws://localhost:8000/ws/notifications/');
-  
-  ws.addEventListener('open', function(event) {
-    console.log('WebSocket connection established');
-  });
-  
-  ws.addEventListener('message', function(event) {
-    const message = JSON.parse(event.data).message;
-    console.log('Received notification: ' + message);
-  });
+ws.onopen = function(event) {
+  console.log('WebSocket connection established');
+};
+
+ws.onmessage = function(event) {
+  const data = JSON.parse(event.data);
+  console.log('Received data:', data);
+  // Handle the data here
+};
+
+ws.onclose = function(event) {
+  console.log('WebSocket connection closed:', event);
+};
+// // const ws = new WebSocket('ws://localhost:8080');
+
+// // When the connection is opened
+// ws.addEventListener('open', (event) => {
+//   console.log('WebSocket connection opened!');
+// });
+
+// // When a message is received
+// ws.onmessage = function (e) {
+//       const data = JSON.parse(e.data);
+//       document.querySelector('#chat-text').value += (data.message + ' sent by ' + data.username   + '\n') // add message to text box
+//    }
+   
+// ws.addEventListener('message', (event) => {
+//   console.log(`Received message: ${event.data}`);
+// });
+
+// // When an error occurs
+// ws.addEventListener('error', (event) => {
+//   console.error('WebSocket error:', event);
+// });
+
+// // When the connection is closed
+// ws.addEventListener('close', (event) => {
+//   console.log('WebSocket connection closed:', event);
+// });
+
+// Send a message
+// ws.send(JSON.stringify({
+//     action: "retrieve",
+//     request_id: new Date().getTime(),
+//     pk: 1,
+// }))
   
   // // Example usage to send a notification message
   // const notification = {

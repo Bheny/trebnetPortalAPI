@@ -4,13 +4,16 @@ from django.dispatch import receiver
 from Profiles.models import Profile 
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from .serializers import *
+from channels.layers import get_channel_layer
+
 
 @receiver(post_save, sender=Notification)
 def send_notifications(sender, instance, **kwargs):
     """
         Send notifications to all connected clients via websockets
     """
-
+    print("signal activated to send notification")
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         "notification", {

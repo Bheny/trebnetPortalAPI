@@ -38,11 +38,13 @@ class ClassDetail(generics.GenericAPIView):
         serializer = ClassSerializer(Class)
         return Response(serializer.data)
     
-    def get_queryset(self, request, pk):
-        Class = self.get_object(pk)
-        serializer = ClassSerializer(Class)
-        return Response(serializer.data)
+    # def get_queryset(self, request, pk):
+    #     Class = self.get_object(pk)
+    #     serializer = ClassSerializer(Class)
+    #     return Response(serializer.data)
       
+    def queryset(self, request,):
+        pass 
 
 class ClassApplicationList(generics.GenericAPIView):
     """
@@ -80,9 +82,10 @@ class ClassApplicationDetail(generics.GenericAPIView):
         serializer = ClassApplicationSerializer(Class)
         return Response(serializer.data)
     
-    def get_queryset(self, request, pk):
-        ClassApplication = self.get_object(pk)
-        serializer = ClassApplicationSerializer(Class)
-        return Response(serializer.data)
+    # def get_queryset(self, request, pk):
+    #     ClassApplication = self.get_object(pk)
+    #     serializer = ClassApplicationSerializer(Class)
+    #     return Response(serializer.data)
 
-    
+    def queryset(self, request,):
+        pass 

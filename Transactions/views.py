@@ -43,10 +43,12 @@ class TransactionDetail(generics.GenericAPIView):
         except Transaction.DoesNotExist:
             raise Http404
 
-    def get_queryset(self, request, pk):
-        Transaction = self.get_object(pk)
-        serializer = TransactionListSerializer(Transaction)
-        return Response(serializer.data)
+    def queryset(self, request):
+        pass 
+    # def get_queryset(self, request, pk):
+    #     Transaction = self.get_object(pk)
+    #     serializer = TransactionListSerializer(Transaction)
+    #     return Response(serializer.data)
 
     def get(self, request, pk):
         Transaction = self.get_object(pk)

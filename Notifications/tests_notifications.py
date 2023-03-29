@@ -1,5 +1,6 @@
 import websocket
 import json
+import datetime
 
 def on_message(ws, message):
     print(message)
@@ -13,7 +14,8 @@ def on_close(ws):
 def on_open(ws):
     print("WebSocket connected")
     subscribe_data = {
-        "action": "subscribe",
+        "action": "retrieve",
+        "request_id": 22,
         "pk": 1  # Change this to the ID of the notification you want to observe
     }
     ws.send(json.dumps(subscribe_data))

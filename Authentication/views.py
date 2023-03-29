@@ -93,7 +93,7 @@ class SignInAPI(generics.GenericAPIView):
 
 	def post(self, request):
 		serializer = self.get_serializer(data=request.data)
-		print("this:", serializer)
+		print("this:", request.user)
 		serializer.is_valid(raise_exception=True)
 		data = serializer.validated_data
 		#Before you log them in check if the re quested class exists.
