@@ -201,4 +201,4 @@ EMAIL_HOST_USER = 'trebnet.online@gmail.com' # Replace with your email address
 EMAIL_HOST_PASSWORD = 'sydryuiemzxnaxgx' # Replace with your email password
 DEFAULT_FROM_EMAIL = 'trebnet.online@gmail.com' # Replace with your email address
 
-BASE_URL = 'http://localhost:8000' # Replace with your website's URL
+BASE_URL = 'http://trebnet.vercel.app' # Replace with your website's URL
