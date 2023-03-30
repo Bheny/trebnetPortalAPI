@@ -2,6 +2,7 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from djangochannelsrestframework.observer import ModelObserver
 from .models import Notification
+import json
 
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -26,8 +27,19 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             self.channel_name,
         )
 
-    async def send_comment_notification(self, instance):
-        await self.send(text_data=f"New notifaication on {instance.message} by {instance.profile.user.username}")
+    async def send_comment_notification(self, instance=None):
+        print("sending message: ")
+        await self.send(text_data=f"New notifaication on ")
+
+    async def receive(self, text_data):
+        message = json.loads(text_data)
+        # check that the WebSocket is still open
+        
+        print("Received message: ", message)
+        self.send(text_data=f"New notifaication on ")
+        self.send_comment_notification()
+        
+        
 
 class NotificationObserver(ModelObserver):
     model = Notification

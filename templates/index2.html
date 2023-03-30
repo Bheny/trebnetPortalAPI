@@ -26,7 +26,23 @@ const ws = new WebSocket('ws://localhost:8000/ws/notifications/');
 
 ws.onopen = function(event) {
   console.log('WebSocket connection established');
+  const message = {
+    type: 'message',
+    content: 'Hello, world!'
+  };
+
+  ws.send(JSON.stringify(message));
 };
+
+ws.addEventListener('message', event => {
+  const message = JSON.parse(event.data);
+
+  if (message.type === 'welcome') {
+    console.log(`Server says: ${message.content}`);
+  } else if (message.type === 'echo') {
+    console.log(`Server echoed: ${message.content}`);
+  }
+})
 
 ws.onmessage = function(event) {
   const data = JSON.parse(event.data);

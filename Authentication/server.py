@@ -6,13 +6,15 @@ from .models import EmailVerificationToken
 
 def send(subject, message, recipients):
     try:
-        send_mail(
+        s = send_mail(
                 subject=subject,
                 message=message,
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=recipients, 
                 fail_silently=False)
+        print(s)
     except Exception as e:
+        print(e)
         pass
 
 
@@ -22,17 +24,20 @@ def send_verification_email(user):
 
     # Render the verification email template with the token
     verification_url = f'{settings.BASE_URL}/verify-email/{token.token}/'
-    message = render_to_string('verification_email.html', {'verification_url': verification_url})
+    # message = render_to_string('verification_email.html', {'verification_url': verification_url})
 
-    message = f'Hello, \n To complete the registration process, please verify your email address by clicking on the link below:\n \
+    message = f'Hello,{token.user} \n To complete the registration process, please verify your email address by clicking on the link below:\n \
          {verification_url} \n\n If you did not request this verification email, please ignore it.'
 
     # Send the verification email
-    send(
+    value = send(
         'Verify your email address',
         message,
-        [user.email]
+        [user.email],
+        
     )
+    print(value)
+    return value 
     # send_mail(
     #     'Verify your email address',
     #     message,
