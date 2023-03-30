@@ -67,7 +67,7 @@ class SignUpAPI(generics.GenericAPIView):
 
 		if serializer.is_valid():
 			user = serializer.save() 
-			send_verification_email(user)
+			status =  send_verification_email(user)
 			class_data = serializer.validated_data['class_title']
 			print(dir(Class))
 			c = Class.objects.get(title__iexact=class_data)
@@ -80,7 +80,8 @@ class SignUpAPI(generics.GenericAPIView):
 			token = AuthToken.objects.create(user)
 			return Response({
 				"users": UserSerializer(user, context=self.get_serializer_context()).data,
-				"token": token[1]
+				"token": token[1],
+				"email": status
 			})
 		else:
 			return Response(serializer.errors)
