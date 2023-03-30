@@ -1,1 +1,4 @@
 db.sqlite3
+
+# include virtual env dirs
+.venv
