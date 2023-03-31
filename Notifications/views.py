@@ -55,7 +55,7 @@ class NotificationList(generics.GenericAPIView):
     def get(self, request):
         #get the user Notification 
         Notifications = Notification.objects.all()
-        serializer = NotificationListSerializer(Notifications, many=True)
+        serializer = NotificationSerializer(Notifications, many=True)
         return Response(serializer.data)
 
     def get_queryset(self, request, pk):
@@ -89,7 +89,7 @@ class NotificationDetail(generics.GenericAPIView):
     
     def get(self, request, pk):
         Notification = self.get_object(pk)
-        serializer = NotificationListSerializer(Notification)
+        serializer = NotificationSerializer(Notification)
         return Response(serializer.data)
 
     def put(self, request, pk):
