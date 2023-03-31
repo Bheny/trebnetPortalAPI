@@ -22,6 +22,10 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .server import *
 
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from knox.views import LoginView as KnoxLoginView
+from django.contrib.auth import login
+
 class PasswordResetView(APIView):
     def post(self, request, user_id, token):
         password = request.data.get('password')
@@ -85,8 +89,6 @@ class SignUpAPI(generics.GenericAPIView):
 			})
 		else:
 			return Response(serializer.errors)
-	
-		
 
 
 class SignInAPI(generics.GenericAPIView):
@@ -123,7 +125,15 @@ class SignInAPI(generics.GenericAPIView):
 			return Response({'data':'User account with this Profile does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 		
 		
+class LoginView(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
 
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginView, self).post(request, format=None)
 		
 		
 		
