@@ -3,7 +3,13 @@ import json
 import datetime
 
 def on_message(ws, message):
-    print(message)
+    message = json.loads(message) 
+    msg = f"""
+    ============= NEW MESSAGE ===========
+     {message['data']}
+    =====================================
+     """
+    print(msg)
 
 def on_error(ws, error):
     print(error)
@@ -14,14 +20,14 @@ def on_close(ws):
 def on_open(ws):
     print("WebSocket connected")
     subscribe_data = {
-        "action": "retrieve",
+        "action": "subscribe_instance",
         "request_id": 22,
         "pk": 1  # Change this to the ID of the notification you want to observe
     }
     ws.send(json.dumps(subscribe_data))
 
 
-websocket.enableTrace(True)
+# websocket.enableTrace(True)
 ws = websocket.WebSocketApp("ws://localhost:8000/ws/notifications/",
                                 on_message=on_message,
                                 on_error=on_error,
